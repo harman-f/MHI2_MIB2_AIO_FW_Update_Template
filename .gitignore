@@ -1,0 +1,10 @@
+# Ignoring directories
+Toolbox/
+patches/MHI*/
+
+# Ignoring files
+backup/MU*
+*.bak
+*.ifs
+.DS_Store
+
