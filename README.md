@@ -96,10 +96,9 @@ Use built-in M.I.B AIO version to run SVM fix.<br />
 Enter GEM (CAR+TUNER buttons on home screen) and select function.<br />
 ![image](https://user-images.githubusercontent.com/98130152/178356676-128374db-d50b-4f4f-981b-377d0ef83e5d.png)<br />
 
-# Map updates to the latest US maps:<br />
+# Map updates to the latest maps:<br />
 
 1. **[Download latest maps here](https://mibsolution.one/#/1/15/MHI2(Q))**<br />
-   * ![image](https://user-images.githubusercontent.com/98130152/178357825-0470613c-2826-42f6-909b-af264189f39e.png)<br />
    * ℹ️ Use [download manager](https://mibwiki.one/share/99dda9a7-06e2-4673-a5df-2ea7e0eb18cb) to speed up downloading from mibsolution.one<br />
 2. Copy files to the root of a FAT32 32GB SD card<br />
 3. Install via Software Update on your unit<br />
