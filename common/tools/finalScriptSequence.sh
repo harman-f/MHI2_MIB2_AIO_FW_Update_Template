@@ -28,7 +28,8 @@ ${2}/apps/wlan -a 1 -noboot
 #${2}/apps/aio_special -all
 
 echo "Running addfec --------------"
-${2}/apps/addfec -a
+${2}/apps/addfec -l #output FECs before addfec
+${2}/apps/fecel -fec
 ${2}/apps/addfec -l
 
 #echo "Running other apps script --------------"

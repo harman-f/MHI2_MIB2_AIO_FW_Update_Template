@@ -65,14 +65,17 @@ ParseFecs ()
 		ParseFecContainer
 		((FecsParsed=FecsParsed+1))
 	done
+	echo -ne "Existing FecContainer parsed\n" | $TEE -a $LOG
 }
 
 ParseFecContainer ()
 {
 	if [[ $($DD if=$TMP/FecContainer.tmp skip=$Pointer bs=2 count=2 2> /dev/null) = "1102" ]]; then
 		ParseSingleFec
+		#echo -ne "SingleFec detected\n" | $TEE -a $LOG
 	elif [[ $($DD if=$TMP/FecContainer.tmp skip=$Pointer bs=2 count=2 2> /dev/null) = "1107" ]]; then
 		ParseMultiFec
+		#echo -ne "MultiFec detected\n" | $TEE -a $LOG
 	else
 		FECCOUNTDEC=0
 		FECCOUNTHEX=$(echo "ibase=10;obase=16;$FecsParsed" | $BC)
@@ -122,7 +125,7 @@ CreateFec ()
 	fi
 	VIN=$(echo -ne $VIN | $XXD -u -p -s 0 -l 17)
 	VCRNVIN=$VCRN$VIN
-	$SED 's/\r//g' $thisdir/../patches/$TRAINVERSION"_"$MUVERSION"_PATCH"/addFecs.txt > /tmp/addFecs.txt
+	$SED 's/\r//g' $addFec > /tmp/addFecs.txt
 	read -r FEC < /tmp/addFecs.txt
 	BuildFec
 	$XXD -u -p -c 99999 $TMP/AddedFecs.tmp > $TMP/Fec.tmp
@@ -174,9 +177,9 @@ touch $TMP/AddedFecs.tmp
 		if [ -f $TMP/AddedFecs.tmp ];then
 			echo -n $FECCOUNTHEX"000000" | $XXD -r -p > $TMP/FecContainer.fec
 			cat $TMP/AddedFecs.tmp >> $TMP/FecContainer.fec
-			$DD if=$TMP/FecContainer.tmp skip=4 bs=2 2> /dev/null | $XXD -r -p >> $TMP/FecContainer.fec
+			$DD if=$TMP/FecContainer.tmp skip=4 bs=2 2> /dev/null | $XXD -r -p >> $TMP/FecContainer.fec 2>> $LOG
 			if [ -d $thisdir/../patches/$TRAINVERSION"_"$MUVERSION"_PATCH" ];then
-				cp -rf $TMP/FecContainer.fec $thisdir/../patches/$TRAINVERSION"_"$MUVERSION"_PATCH"/FecContainer.fec
+				cp -rf $TMP/FecContainer.fec $thisdir/../patches/$TRAINVERSION"_"$MUVERSION"_PATCH"/FecContainer.fec 2>> $LOG
 				echo -ne "FEC File build done!\n\n" | $TEE -a $LOG
 			else
 				echo -ne "no patch folder there, FEC File build is done in /tmp...\n\n" | $TEE -a $LOG
