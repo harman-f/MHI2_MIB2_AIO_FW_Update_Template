@@ -29,7 +29,7 @@ ${2}/apps/wlan -a 1 -noboot
 
 echo "Running addfec --------------"
 ${2}/apps/addfec -l #output FECs before addfec
-${2}/apps/fecel -fec
+${2}/apps/addfec -a #edit addFecs.txt in /common/tools/ to hold fitting navigation FEC
 ${2}/apps/addfec -l
 
 #echo "Running other apps script --------------"

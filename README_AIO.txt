@@ -17,8 +17,9 @@ All-In-One features:
 - Developer Mode with GEM (hidden Green Engineering Menu) will be enabled during the installation. No need for OBDeleven, VCDS, VCP.
 - WLAN will be enabled - required for e.g.  Porsche Track Precision App
 - Navigation will be enabled
+- Basic backup will be run during installation before any chnages to units coding is applied
 - M.I.B. - More Incredible Bash will be enabled to run from SD
 - M.I.B. AIO version - with reduced functions - will be available directly from FW SD card
   - SVM fix, Backup functions, some basic cosing checks
 
-Version: 20220712
+Version: 202YMMDD
