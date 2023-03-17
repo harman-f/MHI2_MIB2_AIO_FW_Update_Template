@@ -9,19 +9,19 @@ This repository contains the building blocks for custom **A**ll **I**n **O**ne F
 
 # Check WIKI about how to use AIO FWs
 
-(WIKI)[https://github.com/harman-f/MHI2_MIB2_AIO_FW_Update_Template/wiki] contains instruction on how to use (AIO FWs)[https://mibsolution.one/#/1/9/MHI2%20-%20HARMAN/Firmware] based on this building blocks.
+[WIKI](https://github.com/harman-f/MHI2_MIB2_AIO_FW_Update_Template/wiki) contains instruction on how to use [AIO FWs[(https://mibsolution.one/#/1/9/MHI2%20-%20HARMAN/Firmware) based on this building blocks.
 
 # AIO FWs know to exist
 
 ## VW
 
 * MHI2_ER_VWG11_K3342_1_AIO_MU1427
-* MHI2_ER_VWG13_K4525_1_AIO_MU1367 - (can also convert from G11 to G13)[https://github.com/harman-f/MHI2_MIB2_AIO_FW_Update_Template/wiki/G11-to-G13-conversion]
+* MHI2_ER_VWG13_K4525_1_AIO_MU1367 - [can also convert from G11 to G13[(https://github.com/harman-f/MHI2_MIB2_AIO_FW_Update_Template/wiki/G11-to-G13-conversion)
 
 ## Skoda
 
 * MHI2_ER_SKG11_K3343_1_AIO_MU1433
-* MHI2_ER_SKG13_P4526_1_AIO_MU1440 - (can also convert from G11 to G13)[https://github.com/harman-f/MHI2_MIB2_AIO_FW_Update_Template/wiki/G11-to-G13-conversion]
+* MHI2_ER_SKG13_P4526_1_AIO_MU1440 - [can also convert from G11 to G13[(https://github.com/harman-f/MHI2_MIB2_AIO_FW_Update_Template/wiki/G11-to-G13-conversion)
 
 ## SEAT
 
