@@ -6,27 +6,6 @@ This repository contains the building blocks for custom **A**ll **I**n **O**ne F
 
 ℹ️ Custom all-in-one FW update based on metainfo2 exploit.<br />
 :warning: Read full article before using this update.<br />
-<br />
-**Last update XX.XX.20XX**<br />
-
-# Features
-* Based on latest `MHI2_XX_XXXXX` firmware<br />
-* Automatic starting FW update after plugging in SD<br />
-* Patched IFS-Root (FEC, VCRN & Component Protection patch) will be used during the installation.<br />
-* FecContainer.fec will be extended with missing FECs:<br />
-    * `00030000`,`00040100`, `00050000`,`00070100`, `00070200`, `00030000`, `map FEC`,`00060100`,`00060500`,`00060700`,`00060800`, `00060900`, `00060A00`<br />
-    * addFecs.txt in /common/tools/ can be adjusted as needed. Change add FECS with e.g. notepad.<br />
-* CarPlay and AndroidAuto will be enabled during the installation<br />
-* Developer Mode with GEM (hidden Green Engineering Menu) will be enabled during the installation<br />
-    *No need for OBD tools like PIWIS to enable it.<br />
-* WLAN will be enabled
-* M.I.B. - More Incredible Bash will be enabled to run from SD<br />
-* [M.I.B. AIO version](https://github.com/Mr-MIBonk/M.I.B._More-Incredible-Bash) - with AIO tailored functions - will be available directly from AIO SD card
-    * SVM fix, backup/restore functions, some basic coding checks and more<br />
-* Gracenote can be udated to latest version
-* RadioStation DB can be updated to latest version
-* Basic system backup will be run during installation process, before any changes to unit are applied<br />
-* Full LOG of installation process is stored on SD card folder /backup/logs/<br />
 
 # Check WIKI about how to use AIO FWs
 
@@ -59,3 +38,22 @@ This repository contains the building blocks for custom **A**ll **I**n **O**ne F
 
 * MHI2_ER_AU57x_K3663_1_MU1425_AIO
 not based on this repo, but working similar
+
+# Features
+
+* Automatic starting FW update after plugging in SD<br />
+* Patched IFS-Root (FEC, VCRN & Component Protection patch) will be used during the installation.<br />
+* FecContainer.fec will be extended with missing FECs:<br />
+    * `00030000`,`00040100`, `00050000`,`00070100`, `00070200`, `00030000`, `map FEC`,`00060100`,`00060500`,`00060700`,`00060800`, `00060900`, `00060A00`<br />
+    * addFecs.txt in /common/tools/ can be adjusted as needed. Change add FECS with e.g. notepad.<br />
+* CarPlay and AndroidAuto will be enabled during the installation<br />
+* Developer Mode with GEM (hidden Green Engineering Menu) will be enabled during the installation<br />
+    *No need for OBD tools like PIWIS to enable it.<br />
+* WLAN will be enabled
+* M.I.B. - More Incredible Bash will be enabled to run from SD<br />
+* [M.I.B. AIO version](https://github.com/Mr-MIBonk/M.I.B._More-Incredible-Bash) - with AIO tailored functions - will be available directly from AIO SD card
+    * SVM fix, backup/restore functions, some basic coding checks and more<br />
+* Gracenote can be udated to latest version
+* RadioStation DB can be updated to latest version
+* Basic system backup will be run during installation process, before any changes to unit are applied<br />
+* Full LOG of installation process is stored on SD card folder /backup/logs/<br />
