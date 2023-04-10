@@ -2,7 +2,7 @@
 
 This repository contains the building blocks for custom **A**ll **I**n **O**ne FW updates.
 
-**⚠️ Content of this repository is NOT a FW update**
+**⚠️ Content of this repository is NOT a FW update**<br />
 It contains most of the building blocks to create an AIO FW.
 
 ℹ️ Read full article before using this update.<br />
