@@ -12,7 +12,7 @@ You will learn how to use a pre made AIO FW update and where to find them.
 
 [WIKI](https://github.com/harman-f/MHI2_MIB2_AIO_FW_Update_Template/wiki) contains instruction on how to use [AIO FWs](https://mibsolution.one/#/1/9/MHI2%20-%20HARMAN/Firmware) based on this building blocks.
 
-# AIO FWs know to exist
+# AIO FWs known to exist
 
 ## VW
 
