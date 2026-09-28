@@ -1,3 +1,6 @@
+# Preserve byte-exact line endings for files whose historical SHA-1 depends on them.
+/common/tools/0/default/ExceptionList.txt text eol=crlf
+
 # Declare files that will always have LF line endings on checkout.
 /metainfo2.txt text eol=crlf
 /esd/*.esd text eol=crlf
