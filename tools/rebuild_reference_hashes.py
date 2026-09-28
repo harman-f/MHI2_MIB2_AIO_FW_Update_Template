@@ -35,9 +35,9 @@ HEADER = """####################################################################
 """
 
 ENTRY_RE = re.compile(
-    r'FileName\\s*=\\s*"(?P<name>[^"]+)"\\s*'
-    r'FileSize\\s*=\\s*"(?P<size>\\d+)"\\s*'
-    r'CheckSum\\s*=\\s*"(?P<sha1>[0-9A-Fa-f]{40})"',
+    r'FileName\s*=\s*"(?P<name>[^"]+)"\s*'
+    r'FileSize\s*=\s*"(?P<size>\d+)"\s*'
+    r'CheckSum\s*=\s*"(?P<sha1>[0-9A-Fa-f]{40})"',
     re.MULTILINE,
 )
 
@@ -147,7 +147,7 @@ def command_tool_dir(args: argparse.Namespace) -> int:
         sys.stdout.write(rendered)
         return 0
 
-    output.write_text(rendered, encoding="utf-8", newline="\n")
+    output.write_bytes(rendered.encode("utf-8"))
     print(f"WROTE: {output}")
     for name, (size, digest) in parse_tool_hashes(rendered).items():
         print(f"  {name}: size={size} sha1={digest}")
