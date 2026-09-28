@@ -12,7 +12,7 @@ From the repository root:
 python3 tools/rebuild_reference_hashes.py tool-dir
 ```
 
-The command scans all regular, non-hidden files in `common/tools/0/default/` except `hashes.txt` itself and writes fresh:
+The command reads the existing `hashes.txt` first and recalculates **exactly the files already referenced by that manifest**. Placeholder or unrelated files in the directory are not added automatically. It writes fresh:
 
 ```text
 FileName = "..."
@@ -34,7 +34,7 @@ Preview the regenerated manifest:
 python3 tools/rebuild_reference_hashes.py tool-dir --stdout
 ```
 
-The files are hashed as **raw bytes**. Line endings therefore matter, exactly as they do to the unit.
+The files are hashed as **raw bytes**. Line endings therefore matter, exactly as they do to the unit. The repository pins the historical `ExceptionList.txt` checkout to CRLF because its published `695`-byte / SHA-1 reference depends on CRLF, while `finalScript.sh` is pinned to LF.
 
 ## 2. Generate a manual metainfo reference block
 
@@ -90,6 +90,8 @@ plus a comment containing the whole-file SHA-1.
 **Important:** `524288` (512 KiB) is a useful research/test value for known MHI2 examples, but this tool does not claim that every component or firmware family uses that chunk size. Verify the target format before copying the generated block into a metainfo.
 
 ## What this tool deliberately does not do
+
+If you intentionally add a new secured reference file, add its `FileName`/placeholder entry to `hashes.txt` first and then run the rebuild. The helper refuses to invent the manifest scope.
 
 It does not:
 
