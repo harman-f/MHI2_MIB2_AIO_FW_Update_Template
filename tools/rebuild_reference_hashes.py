@@ -6,8 +6,8 @@ template without generating or modifying metainfo2.txt.
 Commands:
 
   tool-dir
-      Rebuild/check common/tools/0/default/hashes.txt from the files next
-      to it.
+      Rebuild/check an existing hashes.txt from the files referenced by it.
+      The manifest controls scope; unrelated/placeholder files are not added.
 
   file
       Print FileName/FileSize/CheckSum lines for one reference file.
@@ -67,42 +67,56 @@ def quote_name(name: str) -> str:
     return name.replace("\\", "\\\\").replace('"', '\\"')
 
 
-def render_tool_hashes(directory: Path, output_name: str) -> str:
-    files = sorted(
-        (
-            path
-            for path in directory.iterdir()
-            if path.is_file()
-            and path.name != output_name
-            and not path.name.startswith(".")
-        ),
-        key=lambda path: path.name.lower(),
-    )
+def parse_tool_hashes(text: str) -> list[tuple[str, int, str]]:
+    result: list[tuple[str, int, str]] = []
+    for match in ENTRY_RE.finditer(text):
+        result.append(
+            (
+                match.group("name"),
+                int(match.group("size")),
+                match.group("sha1").lower(),
+            )
+        )
+    return result
 
-    if not files:
-        raise ValueError(f"no reference files found in {directory}")
 
+def current_reference_entries(
+    directory: Path, manifest_text: str
+) -> list[tuple[str, int, str]]:
+    declared = parse_tool_hashes(manifest_text)
+    if not declared:
+        raise ValueError(
+            "manifest contains no FileName/FileSize/CheckSum entries; "
+            "refusing to invent manifest scope"
+        )
+
+    rebuilt: list[tuple[str, int, str]] = []
+    for name, _old_size, _old_hash in declared:
+        path = directory / name
+        if not path.is_file():
+            raise ValueError(f"referenced file is missing: {path}")
+        rebuilt.append((name, path.stat().st_size, sha1_file(path)))
+    return rebuilt
+
+
+def render_tool_hashes(entries: list[tuple[str, int, str]]) -> str:
     lines = [HEADER.rstrip(), ""]
-    for path in files:
+    for name, size, digest in entries:
         lines.extend(
             [
-                f'FileName = "{quote_name(path.name)}"',
-                f'FileSize = "{path.stat().st_size}"',
-                f'CheckSum = "{sha1_file(path)}"',
+                f'FileName = "{quote_name(name)}"',
+                f'FileSize = "{size}"',
+                f'CheckSum = "{digest}"',
                 "",
             ]
         )
     return "\n".join(lines).rstrip() + "\n"
 
 
-def parse_tool_hashes(text: str) -> dict[str, tuple[int, str]]:
-    result: dict[str, tuple[int, str]] = {}
-    for match in ENTRY_RE.finditer(text):
-        result[match.group("name")] = (
-            int(match.group("size")),
-            match.group("sha1").lower(),
-        )
-    return result
+def entry_map(
+    entries: list[tuple[str, int, str]]
+) -> dict[str, tuple[int, str]]:
+    return {name: (size, digest) for name, size, digest in entries}
 
 
 def command_tool_dir(args: argparse.Namespace) -> int:
@@ -112,30 +126,36 @@ def command_tool_dir(args: argparse.Namespace) -> int:
     if not directory.is_dir():
         print(f"ERROR: not a directory: {directory}", file=sys.stderr)
         return 2
+    if not output.is_file():
+        print(
+            f"ERROR: manifest not found: {output}; "
+            "create the intended entries manually first",
+            file=sys.stderr,
+        )
+        return 2
+
+    manifest_text = output.read_text(encoding="utf-8")
 
     try:
-        rendered = render_tool_hashes(directory, args.output)
+        declared = parse_tool_hashes(manifest_text)
+        rebuilt = current_reference_entries(directory, manifest_text)
+        rendered = render_tool_hashes(rebuilt)
     except ValueError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 
     if args.check:
-        if not output.is_file():
-            print(f"STALE: missing {output}", file=sys.stderr)
-            return 1
+        old = entry_map(declared)
+        new = entry_map(rebuilt)
 
-        current = output.read_text(encoding="utf-8")
-        if current == rendered:
-            count = len(parse_tool_hashes(current))
-            print(f"OK: {output} matches {count} reference file(s)")
+        if old == new:
+            print(
+                f"OK: {output} matches {len(rebuilt)} referenced file(s)"
+            )
             return 0
 
-        old = parse_tool_hashes(current)
-        new = parse_tool_hashes(rendered)
-        names = sorted(set(old) | set(new), key=str.lower)
-
         print(f"STALE: {output}", file=sys.stderr)
-        for name in names:
+        for name, _size, _digest in rebuilt:
             if old.get(name) != new.get(name):
                 print(
                     f"  {name}: {old.get(name)} -> {new.get(name)}",
@@ -149,7 +169,7 @@ def command_tool_dir(args: argparse.Namespace) -> int:
 
     output.write_bytes(rendered.encode("utf-8"))
     print(f"WROTE: {output}")
-    for name, (size, digest) in parse_tool_hashes(rendered).items():
+    for name, size, digest in rebuilt:
         print(f"  {name}: size={size} sha1={digest}")
     return 0
 
@@ -201,7 +221,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     tool_dir = sub.add_parser(
         "tool-dir",
-        help="rebuild or verify hashes.txt for a reference-tool directory",
+        help=(
+            "rebuild or verify an existing hashes.txt from exactly the "
+            "files referenced by that manifest"
+        ),
     )
     tool_dir.add_argument(
         "directory",
