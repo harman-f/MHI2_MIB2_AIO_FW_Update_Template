@@ -5,6 +5,7 @@ on:
     paths:
       - "common/tools/0/default/**"
       - "tools/rebuild_reference_hashes.py"
+      - ".gitattributes"
       - ".github/workflows/reference-hashes.yml"
   pull_request:
     paths:
